@@ -34,7 +34,6 @@
   </dependencies>
 
   <modules>
-  	<module>Backend</module>
   	<module>ABM-Backend</module>
   	<module>ABM-Server</module>
   	<module>ABM-Client</module>
