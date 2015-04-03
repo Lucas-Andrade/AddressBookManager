@@ -19,18 +19,18 @@ public class Person implements Entity {
 	/**
 	 * The set of the known {@code Person}'s {@code Contact}s.
 	 */
-	private Set<Contact> properties = new TreeSet<Contact>();
+	private Set<Contact> contacts = new TreeSet<Contact>(new ContactComparator());
 	
 	/**
 	 * Constructs a new person, with a name and a set of the {@code Person}'s {@code Contact}s.
 	 * @param name
-	 * @param properties
+	 * @param contact
 	 */
-	Person(String name, Contact... properties){
+	Person(String name, Contact... contact){
 		this.name = name;
 		
-		for(int i = 0; i < properties.length; i++){
-			this.properties.add(properties[i]);
+		for(int i = 0; i < contact.length; i++){
+			this.contacts.add(contact[i]);
 		}
 	}
 	
@@ -38,7 +38,7 @@ public class Person implements Entity {
 	 * @return a {@code Set} with the {@code Person}'s {@code Contact}s.
 	 */
 	public Set<Contact> getProperties(){
-		return properties;
+		return contacts;
 	}
 	
 	/**
@@ -58,7 +58,7 @@ public class Person implements Entity {
 		int result = 1;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result
-				+ ((properties == null) ? 0 : properties.hashCode());
+				+ ((contacts == null) ? 0 : contacts.hashCode());
 		return result;
 	}
 
@@ -85,7 +85,7 @@ public class Person implements Entity {
 		if(! name.equals(person.getName()))
 			return false;
 		
-		if(! properties.equals(person.getProperties())){
+		if(! contacts.equals(person.getProperties())){
 			return false;
 		}
 		

@@ -1,29 +1,57 @@
 package backendEntities;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
-import backendEntities.Contact;
-import backendEntities.PhoneNumber;
-import junit.framework.TestCase;
+public class PersonTest {
 
-public class PersonTest extends TestCase {
-	
 	@Test
-	public void shouldBeEqual(){
-		assertFalse(true && false);
+	public void shouldBeEqual() {
+		Person person2 = constructPerson();
+		Person person1 = constructPerson();
+		assertTrue(person1.equals(person2));
 	}
 	
-	//TODO
-	
-	private Contact contact = new PhoneNumber(123456789);
-	
 	@Test
-	public void testTheNumber(){
-		assertEquals("123456789", contact.getProperty());
+	public void shouldBeEqualToItself(){
+		Person person = constructPerson();
+		assertTrue(person.equals(person));
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
-	public void shouldThrowAnIllegalArgumentException(){
-		new PhoneNumber(12345678);
+	@Test
+	public void shouldBeDifferentThanANull(){
+		Person person = constructPerson();
+		assertFalse(person.equals(null));
+	}
+	
+	@Test
+	public void shouldBeDifferentThanAnObject(){
+		Person person = constructPerson();
+		assertFalse(person.equals(new Object()));
+	}
+
+	@Test
+	public void shouldBeDifferentDespiteHavingTheSameName(){
+		Person person = constructPerson();
+		Person person2 = new Person("name", new Contact[]{});
+		assertFalse(person.equals(person2));
+	}
+	
+	@Test
+	public void shouldBeDifferentDespiteHavingSameContacts(){
+		Person person = constructPerson();
+		Contact[] contacts = constructContacts();
+		Person person2 = new Person("another name", contacts);
+		
+		assertFalse(person.equals(person2));
+	}
+	
+	private Contact[] constructContacts() {
+		return new Contact[]{new PhoneNumber(123456789), new Address("Avenue xyz, nr 42, Earth")};
+	}
+	
+	private Person constructPerson(){
+		return new Person("name", constructContacts());
 	}
 }
