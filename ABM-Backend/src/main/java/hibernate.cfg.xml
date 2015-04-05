@@ -1,15 +1,15 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 
-<hibernate-configuration
-        xmlns="http://www.hibernate.org/xsd/hibernate-configuration"
-        xsi:schemaLocation="http://www.hibernate.org/xsd/hibernate-configuration hibernate-configuration-4.0.xsd"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<hibernate-configuration>
   <session-factory>
     <!-- Database connection settings -->
     <property name="connection.driver_class">net.sourceforge.jtds.jdbc.Driver</property>
-    <property name="connection.url">jdbc:jtds:sqlserver://localhost:1433/AddressBookDB</property>
-    <property name="connection.username"></property>
-    <property name="connection.password"></property>
+    <property name="connection.url">jdbc:jtds:sqlserver://localhost:1433/AddressBookManager</property>
+	<property name="connection.username">user</property>
+    <property name="connection.password">12345</property>
 
     <!-- JDBC connection pool (use the built-in) -->
     <property name="connection.pool_size">1</property>
@@ -28,6 +28,8 @@
 
     <!-- Drop and re-create the database schema on startup -->
     <property name="hbm2ddl.auto">create</property>
-    <mapping resource="org/hibernate/tutorial/domain/Event.hbm.xml"/>
+    <mapping class="backendEntities.Person"/>
+    <mapping class="backendEntities.User"/>
+    
   </session-factory>
 </hibernate-configuration>

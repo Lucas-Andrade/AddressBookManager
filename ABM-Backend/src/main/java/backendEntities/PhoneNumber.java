@@ -1,13 +1,25 @@
 package backendEntities;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 /**
  * Stores the phone number of an {@code Entity}.
  * 
  * @author Lucas Andrade
  *
  */
+@Entity
 public class PhoneNumber implements Contact{
 
+	/**
+	 * Phone number identifier.
+	 */
+	@Id
+	@GeneratedValue
+	private int phoneNumberId;
+	
 	/**
 	 * The name of this type of {@code Contact}.
 	 */
@@ -27,6 +39,48 @@ public class PhoneNumber implements Contact{
 		this.number = number;
 	}
 	
+	/**
+	 * Constructs a new empty {@code PhoneNumber} object 
+	 */
+	public PhoneNumber(){}
+	
+	/**
+	 * @return the {@code PhoneNumber} identifier
+	 */
+	public int getPhoneNumberId() {
+		return phoneNumberId;
+	}
+
+	/**
+	 * sets a new {@code PhoneNumber} identifier
+	 * @param phoneNumberId
+	 */
+	public void setPhoneNumberId(int phoneNumberId) {
+		this.phoneNumberId = phoneNumberId;
+	}
+
+	/**
+	 * @return the phone number stored in {@code this} {@code PhoneNumber} object
+	 */
+	public int getNumber() {
+		return number;
+	}
+
+	/**
+	 * Sets a new phone number in {@code this} {@code PhoneNumber} object
+	 * @param number
+	 */
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
+	/**
+	 * @return the name of {@code this} phone number
+	 */
+	public String getName() {
+		return NAME;
+	}
+
 	/**
 	 * @see Contact#getPropertyName()
 	 */
@@ -54,6 +108,5 @@ public class PhoneNumber implements Contact{
 			throw new IllegalArgumentException("Phone number too small.");
 		}
 	}
-
 	
 }

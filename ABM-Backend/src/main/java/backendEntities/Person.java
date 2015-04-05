@@ -3,13 +3,27 @@ package backendEntities;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
 /**
  * A person, that has a name and several {@code Contact}s.
  * 
  * @author Lucas Andrade
  *
  */
-public class Person implements Entity {
+@Entity
+public class Person implements BookableEntity {
+	
+	/**
+	 * Unique person identifier.
+	 */
+	@Id
+	@GeneratedValue
+	private int personId;
 	
 	/**
 	 * The {@code Person}'s name.
@@ -19,6 +33,7 @@ public class Person implements Entity {
 	/**
 	 * The set of the known {@code Person}'s {@code Contact}s.
 	 */
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Set<Contact> contacts = new TreeSet<Contact>(new ContactComparator());
 	
 	/**
@@ -35,14 +50,53 @@ public class Person implements Entity {
 	}
 	
 	/**
-	 * @return a {@code Set} with the {@code Person}'s {@code Contact}s.
+	 * Implicit constructor. Constructs a {@code Person} with no name and no 
+	 * {@code Contact}s.
 	 */
-	public Set<Contact> getProperties(){
+	Person(){}
+	
+	/**
+	 * @return the person identifier
+	 */
+	public int getPersonId() {
+		return personId;
+	}
+
+	/**
+	 * Sets a new person identifier.
+	 * @param personId
+	 */
+	public void setPersonId(int personId) {
+		this.personId = personId;
+	}
+
+	/**
+	 * @return the {@code Set} of {@code this} {@code Person}'s contacts.
+	 */
+	public Set<Contact> getContacts() {
 		return contacts;
+	}
+
+	/**
+	 * Sets the {@code Set} passed as parameter as the {@code Set} of {@code this} {@code Person}'s 
+	 * contacts.
+	 * @param contacts
+	 */
+	public void setContacts(Set<Contact> contacts) {
+		this.contacts = contacts;
+	}
+
+	/**
+	 * Sets the {@code String} passed as parameter as the new name of the {@code this}
+	 * {@code Person}.
+	 * @param name
+	 */
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	/**
-	 * @see Entity#getName()
+	 * @see BookableEntity#getName()
 	 */
 	public String getName(){
 		return name;
@@ -85,7 +139,7 @@ public class Person implements Entity {
 		if(! name.equals(person.getName()))
 			return false;
 		
-		if(! contacts.equals(person.getProperties())){
+		if(! contacts.equals(person.getContacts())){
 			return false;
 		}
 		
@@ -93,9 +147,9 @@ public class Person implements Entity {
 	}
 	
 	/**
-	 * @see Entity#compareTo(Entity)
+	 * @see BookableEntity#compareTo(BookableEntity)
 	 */
-	public int compareTo(Entity obj){
+	public int compareTo(BookableEntity obj){
 		
 		if(equals(obj))
 			return 0;

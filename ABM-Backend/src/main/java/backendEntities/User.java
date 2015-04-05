@@ -1,8 +1,13 @@
 package backendEntities;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 /**
  * The {@code User} represents the entity that will use the application. The {@code User} possesses 
@@ -13,16 +18,19 @@ import java.util.TreeMap;
  * @author Lucas Andrade
  *
  */
+@Entity
 public class User {
 	
 	/**
 	 * The entities {@code this} {@code User} has booked.
 	 */
-	private Map<String, Entity> bookedEntities = new TreeMap<String, Entity>();
+	@OneToMany(cascade = CascadeType.ALL)
+	private Map<String, BookableEntity> bookedEntities = new TreeMap<String, BookableEntity>();
 	
 	/**
 	 * {@code this} {@code User}'s username.
 	 */
+	@Id
 	private String username;
 	
 	/**
@@ -38,7 +46,8 @@ public class User {
 	/**
 	 * Lock that must be acquired by every thread trying to access {@code this} {@code User}.
 	 */
-	private Object userLock = new Object();
+	@Transient
+	private final Object USERLOCK = new Object();
 	
 	/**
 	 * Constructs a new {@code User} with an username, password and email. It is verified
@@ -60,50 +69,27 @@ public class User {
 	}
 	
 	/**
-	 * Adds a new {@code Entity} to the {@code Map} of booked entities of {@code this} {@code User}.
-	 * No repeated entities are allowed.
-	 * 
-	 * @param newEntity
-	 * @return {@code true} if the {@code Entity} was successfully added.
+	 * Default constructer for the {@code User}. Constructs a {@code User} object
+	 * with no information: no username, password or email.
 	 */
-	public boolean addEntity(Entity newEntity){
-		synchronized(userLock){
-			if(bookedEntities.containsKey(newEntity.getName())){
-				return false;
-			}
-			bookedEntities.put(newEntity.getName(), newEntity);
-			return true;
+	public User(){}
+	
+	/**
+	 * @return the {@code Map} of booked entities by {@code this} {@code User}.
+	 */
+	public Map<String, BookableEntity> getBookedEntities() {
+		synchronized(USERLOCK){
+			return bookedEntities;
 		}
 	}
 	
 	/**
-	 * Removes an {@code Entity} from the {@code Map} of booked entities of {@code this} {@code User}.
-	 * @param name
-	 * @return {@code true} if the {@code Entity} was successfully removed.
+	 * Sets a new {@code Map} as the booked entities by {@code this} {@code User}.
+	 * @param bookedEntities
 	 */
-	public boolean removeEntity(String name) {
-		synchronized(userLock){
-			return null != bookedEntities.remove(name);
-		}
-	}
-	
-	/**
-	 * @param name
-	 * @return the {@code Entity} that has the name passed as parameter.
-	 * @return null if there is no {@code Entity} with such name.
-	 */
-	public Entity getEntity(String name) {
-		synchronized(userLock){
-			return bookedEntities.get(name);
-		}
-	}
-	
-	/**
-	 * @return the {@code Collection} of booked entities by {@code this} {@code User}.
-	 */
-	public Collection<Entity> getEntities(){
-		synchronized(userLock){
-			return bookedEntities.values();
+	public void setBookedEntities(Map<String, BookableEntity> bookedEntities) {
+		synchronized(USERLOCK){
+			this.bookedEntities = bookedEntities;
 		}
 	}
 	
@@ -111,7 +97,7 @@ public class User {
 	 * @return {@code this} {@code User}'s username
 	 */
 	public String getUsername(){
-		synchronized(userLock){
+		synchronized(USERLOCK){
 			return username;
 		}
 	}
@@ -120,7 +106,7 @@ public class User {
 	 * @return {@code this} {@code User}'s password
 	 */
 	public String getPassword(){
-		synchronized(userLock){
+		synchronized(USERLOCK){
 			return password;
 		}
 	}
@@ -129,7 +115,7 @@ public class User {
 	 * @return {@code this} {@code User}'s email
 	 */
 	public String getEmail(){
-		synchronized(userLock){
+		synchronized(USERLOCK){
 			return email;
 		}
 	}
@@ -141,7 +127,7 @@ public class User {
 	 */
 	public void setPassword(String newPassword){
 		passwordChecker(newPassword);
-		synchronized(userLock){
+		synchronized(USERLOCK){
 			this.password = newPassword;
 		}
 	}
@@ -153,8 +139,18 @@ public class User {
 	 */
 	public void setEmail(String newEmail){
 		emailChecker(newEmail);
-		synchronized(userLock){
+		synchronized(USERLOCK){
 			this.email = newEmail;
+		}
+	}
+	
+	/**
+	 * Sets a new username for {@this} {@code User}. 
+	 * @param username
+	 */
+	public void setUsername(String username) {
+		synchronized(USERLOCK){
+			this.username = username;
 		}
 	}
 	
