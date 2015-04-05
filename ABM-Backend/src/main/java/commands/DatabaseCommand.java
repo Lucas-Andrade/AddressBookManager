@@ -8,7 +8,7 @@ import backendEntities.BookableEntity;
 import backendEntities.Contact;
 
 /**
- * Abstract class of the {@code Command}s that save data to the database.
+ * Abstract class of the {@code Command}s that save, update and remove data to the database.
  * 
  * @author Lucas Andrade
  *
