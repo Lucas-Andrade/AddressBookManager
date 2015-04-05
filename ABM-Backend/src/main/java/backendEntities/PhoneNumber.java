@@ -1,8 +1,6 @@
 package backendEntities;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 /**
  * Stores the phone number of an {@code Entity}.
@@ -11,14 +9,7 @@ import javax.persistence.Id;
  *
  */
 @Entity
-public class PhoneNumber implements Contact{
-
-	/**
-	 * Phone number identifier.
-	 */
-	@Id
-	@GeneratedValue
-	private int phoneNumberId;
+public class PhoneNumber extends Contact{
 	
 	/**
 	 * The name of this type of {@code Contact}.
@@ -43,21 +34,6 @@ public class PhoneNumber implements Contact{
 	 * Constructs a new empty {@code PhoneNumber} object 
 	 */
 	public PhoneNumber(){}
-	
-	/**
-	 * @return the {@code PhoneNumber} identifier
-	 */
-	public int getPhoneNumberId() {
-		return phoneNumberId;
-	}
-
-	/**
-	 * sets a new {@code PhoneNumber} identifier
-	 * @param phoneNumberId
-	 */
-	public void setPhoneNumberId(int phoneNumberId) {
-		this.phoneNumberId = phoneNumberId;
-	}
 
 	/**
 	 * @return the phone number stored in {@code this} {@code PhoneNumber} object

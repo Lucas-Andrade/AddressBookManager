@@ -1,6 +1,8 @@
 package backendEntities;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
@@ -13,12 +15,19 @@ import javax.persistence.InheritanceType;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public interface BookableEntity {
+public abstract class BookableEntity {
+	
+	/**
+	 * Unique entity identifier.
+	 */
+	@Id
+	@GeneratedValue
+	private int EntityId;
 	
 	/**
 	 * @return the {@code name} of the {@code Entity}.
 	 */
-	public String getName();
+	public abstract String getName();
 	
 	/**
 	 * Compares the name of {@code this} with the name of the {@code Entity}
@@ -28,5 +37,21 @@ public interface BookableEntity {
 	 * @return 0 if the names are equal
 	 * @return <0 or >0 if the names are not equal
 	 */
-	public int compareTo(BookableEntity obj);
+	public abstract int compareTo(BookableEntity obj);
+
+	/**
+	 * @return the {@code Entity} identifier
+	 */
+	public int getEntityId() {
+		return EntityId;
+	}
+
+	/**
+	 * Sets a new {@code Entity} identifier
+	 * @param entityId
+	 */
+	public void setEntityId(int entityId) {
+		EntityId = entityId;
+	}
+	
 }

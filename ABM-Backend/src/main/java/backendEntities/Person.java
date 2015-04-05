@@ -1,13 +1,11 @@
 package backendEntities;
 
-import java.util.Set;
+import java.util.Collection;
 import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  * A person, that has a name and several {@code Contact}s.
@@ -16,14 +14,7 @@ import javax.persistence.ManyToOne;
  *
  */
 @Entity
-public class Person implements BookableEntity {
-	
-	/**
-	 * Unique person identifier.
-	 */
-	@Id
-	@GeneratedValue
-	private int personId;
+public class Person extends BookableEntity {
 	
 	/**
 	 * The {@code Person}'s name.
@@ -33,8 +24,8 @@ public class Person implements BookableEntity {
 	/**
 	 * The set of the known {@code Person}'s {@code Contact}s.
 	 */
-	@ManyToOne(cascade = CascadeType.ALL)
-	private Set<Contact> contacts = new TreeSet<Contact>(new ContactComparator());
+	@OneToMany(cascade = CascadeType.ALL)
+	private Collection<Contact> contacts = new TreeSet<Contact>(new ContactComparator());
 	
 	/**
 	 * Constructs a new person, with a name and a set of the {@code Person}'s {@code Contact}s.
@@ -54,26 +45,11 @@ public class Person implements BookableEntity {
 	 * {@code Contact}s.
 	 */
 	Person(){}
-	
-	/**
-	 * @return the person identifier
-	 */
-	public int getPersonId() {
-		return personId;
-	}
-
-	/**
-	 * Sets a new person identifier.
-	 * @param personId
-	 */
-	public void setPersonId(int personId) {
-		this.personId = personId;
-	}
 
 	/**
 	 * @return the {@code Set} of {@code this} {@code Person}'s contacts.
 	 */
-	public Set<Contact> getContacts() {
+	public Collection<Contact> getContacts() {
 		return contacts;
 	}
 
@@ -82,7 +58,7 @@ public class Person implements BookableEntity {
 	 * contacts.
 	 * @param contacts
 	 */
-	public void setContacts(Set<Contact> contacts) {
+	public void setContacts(Collection<Contact> contacts) {
 		this.contacts = contacts;
 	}
 

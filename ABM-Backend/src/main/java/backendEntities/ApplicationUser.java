@@ -19,7 +19,7 @@ import javax.persistence.Transient;
  *
  */
 @Entity
-public class User {
+public class ApplicationUser {
 	
 	/**
 	 * The entities {@code this} {@code User} has booked.
@@ -59,7 +59,7 @@ public class User {
 	 * @param password
 	 * @param email
 	 */
-	public User(String username, String password, String email){
+	public ApplicationUser(String username, String password, String email){
 		
 		emailChecker(email);
 		passwordChecker(password);
@@ -69,10 +69,10 @@ public class User {
 	}
 	
 	/**
-	 * Default constructer for the {@code User}. Constructs a {@code User} object
+	 * Default constructor for the {@code User}. Constructs a {@code User} object
 	 * with no information: no username, password or email.
 	 */
-	public User(){}
+	public ApplicationUser(){}
 	
 	/**
 	 * @return the {@code Map} of booked entities by {@code this} {@code User}.
