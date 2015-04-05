@@ -1,9 +1,11 @@
 package commands;
 
+import org.hibernate.Session;
+
 import backendEntities.ApplicationUser;
 
 /**
- * Adds a new {@code User} to the database
+ * Adds a new {@code ApplicationUser} to the database
  * 
  * @author Lucas Andrade
  *
@@ -11,17 +13,17 @@ import backendEntities.ApplicationUser;
 public class NewUser extends DatabaseCommand{
 
 	/**
-	 * The username of the {@code User} to be added to the database.
+	 * The username of the {@code ApplicationUser} to be added to the database.
 	 */
 	private String username;
 	
 	/**
-	 * The password of the {@code User} to be added to the database.
+	 * The password of the {@code ApplicationUser} to be added to the database.
 	 */
 	private String password;
 	
 	/**
-	 * The email of the {@code User} to be added to the database.
+	 * The email of the {@code ApplicationUser} to be added to the database.
 	 */
 	private String email;
 
@@ -44,11 +46,19 @@ public class NewUser extends DatabaseCommand{
 	 */
 	public void execute() throws CommandException {
 		
+		Session session = openSession();
 		try{
 			ApplicationUser user = new ApplicationUser(username, password, email);
-			saveUser(user);
+			
+			session.save(user);
+			session.getTransaction().commit();
+			
 		} catch (IllegalArgumentException e) {
-			throw new CommandException();
+			throw new CommandException("Error constructing user.");
+		} catch(Exception e) {
+			throw new CommandException("Error saving to the database.");
+		} finally {
+			session.close();
 		}
 	}
 
