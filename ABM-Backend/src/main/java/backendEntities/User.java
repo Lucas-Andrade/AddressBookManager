@@ -68,9 +68,12 @@ public class User {
 	 */
 	public boolean addEntity(Entity newEntity){
 		synchronized(userLock){
-			return null == bookedEntities.put(newEntity.getName(), newEntity);
+			if(bookedEntities.containsKey(newEntity.getName())){
+				return false;
+			}
+			bookedEntities.put(newEntity.getName(), newEntity);
+			return true;
 		}
-		//TODO verificar se isto está bem.
 	}
 	
 	/**
