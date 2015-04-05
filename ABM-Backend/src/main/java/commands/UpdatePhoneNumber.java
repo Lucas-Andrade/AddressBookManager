@@ -78,8 +78,8 @@ public class UpdatePhoneNumber extends DatabaseCommand{
 			
 			Contact contact = iterator.next();
 			if(contact instanceof PhoneNumber && 
-						contact.getProperty().equals(String.valueOf(oldNumber))){
-				((PhoneNumber)contact).setNumber(newNumber);
+						contact.getContact().equals(String.valueOf(oldNumber))){
+				((PhoneNumber)contact).setContact(newNumber);
 				return;
 			}
 		}

@@ -11,15 +11,10 @@ import javax.persistence.Entity;
 @Entity
 public class PhoneNumber extends Contact{
 	
-	/**
-	 * The name of this type of {@code Contact}.
-	 */
-	private final String NAME = "Phone Number";
-	
-	/**
-	 * The phone number of the {@code Entity}.
-	 */
-	private int number;
+//	/**
+//	 * The name of this type of {@code Contact}.
+//	 */
+//	private final String NAME = "Phone Number";
 	
 	/**
 	 * Constructs a new {@code PhoneNumber}, by receiving an integer number.
@@ -27,7 +22,7 @@ public class PhoneNumber extends Contact{
 	 */
 	public PhoneNumber(int number){
 		checkPhoneNumber(number);
-		this.number = number;
+		this.contact = String.valueOf(number);
 	}
 	
 	/**
@@ -36,33 +31,34 @@ public class PhoneNumber extends Contact{
 	public PhoneNumber(){}
 
 	/**
-	 * @return the phone number stored in {@code this} {@code PhoneNumber} object
+	 * Sets a new phone number in {@code this} {@code PhoneNumber} object
+	 * @param number
 	 */
-	public int getNumber() {
-		return number;
+	public void setContact(String number) {
+		this.contact = number;
 	}
 
 	/**
 	 * Sets a new phone number in {@code this} {@code PhoneNumber} object
 	 * @param number
 	 */
-	public void setNumber(int number) {
-		this.number = number;
+	public void setContact(int number) {
+		this.contact = String.valueOf(number);
 	}
 
-	/**
-	 * @see Contact#getPropertyName()
-	 */
-	public String getPropertyName() {
-		return NAME;
-	}
+//	/**
+//	 * @see Contact#getContactName()
+//	 */
+//	public String getContactName() {
+//		return NAME;
+//	}
 	
 	/**
-	 * @see Contact#getProperty()
+	 * @see Contact#getContact()
 	 * @return the phone number stored in {@code this}, as a {@code String}.
 	 */
-	public String getProperty() {
-		return String.valueOf(number);
+	public String getContact() {
+		return contact;
 	}
 
 	/**

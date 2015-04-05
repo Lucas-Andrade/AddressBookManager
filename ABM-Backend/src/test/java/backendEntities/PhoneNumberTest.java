@@ -12,7 +12,7 @@ public class PhoneNumberTest extends TestCase {
 	
 	@Test
 	public void testTheNumber(){
-		assertEquals("123456789", contact.getProperty());
+		assertEquals("123456789", contact.getContact());
 	}
 	
 	@Test(expected = IllegalArgumentException.class)

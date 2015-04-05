@@ -11,7 +11,7 @@ import backendEntities.Person;
  * @author Lucas Address
  *
  */
-public class newAddress extends DatabaseCommand{
+public class NewAddress extends DatabaseCommand{
 
 	/**
 	 * Name of the {@code Person} to whom the {@code Address} will be added.
@@ -29,7 +29,7 @@ public class newAddress extends DatabaseCommand{
 	 * @param personName
 	 * @param address
 	 */
-	public newAddress(String personName, String address) {
+	public NewAddress(String personName, String address) {
 		this.name = personName;
 		this.address = address;
 	}
@@ -40,19 +40,19 @@ public class newAddress extends DatabaseCommand{
 	public void execute() throws CommandException {
 
 		Session session = openSession();
-		try{
+//		try{
 			Person person = new Person(name);
 			Address addressObj = new Address(address);
 			person.getContacts().add(addressObj);
 			
-			session.update(person);
+			session.save(person);
 			session.getTransaction().commit();
 			
-		} catch(Exception e) {
-			throw new CommandException();
-		} finally {
+//		} catch(Exception e) {
+//			throw new CommandException();
+//		} finally {
 			session.close();
-		}
+//		}
 		
 	}
 

@@ -72,7 +72,7 @@ public class RemovePhoneNumber extends DatabaseCommand{
 			
 			Contact contact = iterator.next();
 			if(contact instanceof PhoneNumber && 
-						contact.getProperty().equals(String.valueOf(number))){
+						contact.getContact().equals(String.valueOf(number))){
 				person.getContacts().remove(contact);
 				session.delete(contact);
 				return;

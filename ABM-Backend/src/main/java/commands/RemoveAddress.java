@@ -72,7 +72,7 @@ public class RemoveAddress extends DatabaseCommand{
 			
 			Contact contact = iterator.next();
 			if(contact instanceof Address && 
-						contact.getProperty().equals(String.valueOf(address))){
+						contact.getContact().equals(String.valueOf(address))){
 				person.getContacts().remove(contact);
 				session.delete(contact);
 				return;

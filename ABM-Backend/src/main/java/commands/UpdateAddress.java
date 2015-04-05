@@ -79,8 +79,8 @@ public class UpdateAddress extends DatabaseCommand{
 			
 			Contact contact = iterator.next();
 			if(contact instanceof Address && 
-						contact.getProperty().equals(String.valueOf(oldAddress))){
-				((Address)contact).setAddress(newAddress);
+						contact.getContact().equals(String.valueOf(oldAddress))){
+				((Address)contact).setContact(newAddress);
 				return;
 			}
 		}

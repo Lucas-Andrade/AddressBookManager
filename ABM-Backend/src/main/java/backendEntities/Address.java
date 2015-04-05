@@ -11,22 +11,22 @@ import javax.persistence.Entity;
 @Entity
 public class Address extends Contact{
 
-	/**
-	 * The name of this type of {@code Contact}.
-	 */
-	private final String NAME = "Address";
+//	/**
+//	 * The name of this type of {@code Contact}.
+//	 */
+//	private final String NAME = "Address";
 	
-	/**
-	 * The address of the {@code Entity}.
-	 */
-	private String address;
+//	/**
+//	 * The address of the {@code Entity}.
+//	 */
+//	private String address;
 	
 	/**
 	 * Constructs a new address using a {@code String}.
 	 * @param address
 	 */
 	public Address(String address){
-		this.address = address;
+		this.contact = address;
 	}
 	
 	/**
@@ -35,40 +35,48 @@ public class Address extends Contact{
 	 */
 	public Address() {}
 
-	/**
-	 * @return the address stored in this {@code Address}
-	 */
-	public String getAddress() {
-		return address;
-	}
+//	/**
+//	 * @return the address stored in this {@code Address}
+//	 */
+//	public String getAddress() {
+//		return contact;
+//	}
 
 	/**
 	 * Sets a new address in {@code this} {@code Address}
 	 * @param address
 	 */
-	public void setAddress(String address) {
-		this.address = address;
+	public void setContact(String address) {
+		this.contact = address;
 	}
 
 	/**
-	 * @return the name of the {@code Address}
+	 * @return the address stored in this {@code Address}
 	 */
-	public String getName() {
-		return NAME;
+	@Override
+	public String getContact() {
+		return contact;
 	}
 
-	/**
-	 * @see Contact#getPropertyName()
-	 */
-	public String getPropertyName() {
-		return NAME;
-	}
-
-	/**
-	 * @see Contact#getProperty()
-	 * @return the address stored in {@code this}.
-	 */
-	public String getProperty() {
-		return address;
-	}
+//	/**
+//	 * @return the name of the {@code Address}
+//	 */
+//	public String getName() {
+//		return NAME;
+//	}
+//
+//	/**
+//	 * @see Contact#getContactName()
+//	 */
+//	public String getContactName() {
+//		return NAME;
+//	}
+//
+//	/**
+//	 * @see Contact#getContact()
+//	 * @return the address stored in {@code this}.
+//	 */
+//	public String getContact() {
+//		return address;
+//	}
 }

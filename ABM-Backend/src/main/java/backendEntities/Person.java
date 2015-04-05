@@ -1,9 +1,10 @@
 package backendEntities;
 
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
@@ -17,15 +18,16 @@ import javax.persistence.OneToMany;
 public class Person extends BookableEntity {
 	
 	/**
-	 * The {@code Person}'s name.
+	 * {@code Person}'s name.
 	 */
-	private String name;
+	@Column(name = "Person_Name")
+	protected String name;
 	
 	/**
 	 * The set of the known {@code Person}'s {@code Contact}s.
 	 */
 	@OneToMany(cascade = CascadeType.ALL)
-	private Set<Contact> contacts = new TreeSet<Contact>(new ContactComparator());
+	private Set<Contact> contacts = new HashSet<Contact>();
 	
 	/**
 	 * Constructs a new person, with a name and a set of the {@code Person}'s {@code Contact}s.
@@ -39,6 +41,22 @@ public class Person extends BookableEntity {
 			this.contacts.add(contact[i]);
 		}
 	}
+	
+	/**
+	 * @return the {@code name} of the {@code BookableEntity}.
+	 */
+	public String getName(){
+		return name;
+	}
+	
+	/**
+	 * Sets a new name for the {@code BookableEntity}
+	 * @param name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	
 	/**
 	 * Implicit constructor. Constructs a {@code Person} with no name and no 
@@ -62,21 +80,21 @@ public class Person extends BookableEntity {
 		this.contacts = contacts;
 	}
 
-	/**
-	 * Sets the {@code String} passed as parameter as the new name of the {@code this}
-	 * {@code Person}.
-	 * @param name
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	/**
-	 * @see BookableEntity#getName()
-	 */
-	public String getName(){
-		return name;
-	}
+//	/**
+//	 * Sets the {@code String} passed as parameter as the new name of the {@code this}
+//	 * {@code Person}.
+//	 * @param name
+//	 */
+//	public void setName(String name) {
+//		this.name = name;
+//	}
+//	
+//	/**
+//	 * @see BookableEntity#getName()
+//	 */
+//	public String getName(){
+//		return name;
+//	}
 	
 	/**
 	 * Generates {@code this} object's Hash Code.
