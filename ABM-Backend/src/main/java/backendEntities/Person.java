@@ -1,6 +1,6 @@
 package backendEntities;
 
-import java.util.Collection;
+import java.util.Set;
 import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
@@ -25,14 +25,14 @@ public class Person extends BookableEntity {
 	 * The set of the known {@code Person}'s {@code Contact}s.
 	 */
 	@OneToMany(cascade = CascadeType.ALL)
-	private Collection<Contact> contacts = new TreeSet<Contact>(new ContactComparator());
+	private Set<Contact> contacts = new TreeSet<Contact>(new ContactComparator());
 	
 	/**
 	 * Constructs a new person, with a name and a set of the {@code Person}'s {@code Contact}s.
 	 * @param name
 	 * @param contact
 	 */
-	Person(String name, Contact... contact){
+	public Person(String name, Contact... contact){
 		this.name = name;
 		
 		for(int i = 0; i < contact.length; i++){
@@ -44,12 +44,12 @@ public class Person extends BookableEntity {
 	 * Implicit constructor. Constructs a {@code Person} with no name and no 
 	 * {@code Contact}s.
 	 */
-	Person(){}
+	public Person(){}
 
 	/**
 	 * @return the {@code Set} of {@code this} {@code Person}'s contacts.
 	 */
-	public Collection<Contact> getContacts() {
+	public Set<Contact> getContacts() {
 		return contacts;
 	}
 
@@ -58,7 +58,7 @@ public class Person extends BookableEntity {
 	 * contacts.
 	 * @param contacts
 	 */
-	public void setContacts(Collection<Contact> contacts) {
+	public void setContacts(Set<Contact> contacts) {
 		this.contacts = contacts;
 	}
 

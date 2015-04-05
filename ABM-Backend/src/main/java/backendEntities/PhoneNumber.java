@@ -51,13 +51,6 @@ public class PhoneNumber extends Contact{
 	}
 
 	/**
-	 * @return the name of {@code this} phone number
-	 */
-	public String getName() {
-		return NAME;
-	}
-
-	/**
 	 * @see Contact#getPropertyName()
 	 */
 	public String getPropertyName() {
