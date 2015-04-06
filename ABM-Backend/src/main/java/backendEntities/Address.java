@@ -10,11 +10,6 @@ import javax.persistence.Entity;
  */
 @Entity
 public class Address extends Contact{
-
-//	/**
-//	 * The name of this type of {@code Contact}.
-//	 */
-//	private final String NAME = "Address";
 	
 	/**
 	 * The address.
@@ -35,13 +30,6 @@ public class Address extends Contact{
 	 */
 	public Address() {}
 
-//	/**
-//	 * @return the address stored in this {@code Address}
-//	 */
-//	public String getAddress() {
-//		return contact;
-//	}
-
 	/**
 	 * Sets a new address in {@code this} {@code Address}
 	 * @param address
@@ -59,25 +47,29 @@ public class Address extends Contact{
 		return contact;
 	}
 
-//	/**
-//	 * @return the name of the {@code Address}
-//	 */
-//	public String getName() {
-//		return NAME;
-//	}
-//
-//	/**
-//	 * @see Contact#getContactName()
-//	 */
-//	public String getContactName() {
-//		return NAME;
-//	}
-//
-//	/**
-//	 * @see Contact#getContact()
-//	 * @return the address stored in {@code this}.
-//	 */
-//	public String getContact() {
-//		return address;
-//	}
+	/**
+	 * Compares the specified object with this set for equality. If the object is an instance of
+	 * {@code Address} and stores the same contact, {@code true} is returned.
+	 * 
+	 * @return {@code true} if the object passed as parameter is equal to {@code this}.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		
+		if(obj == null)
+			return false;
+		
+		if(this == obj)
+			return true;
+		
+		if(! getClass().equals(obj.getClass()))
+			return false;
+		
+		Address adr = (Address)obj;
+		
+		if(!contact.equals(adr.getContact()))
+			return false;
+		
+		return true;
+	}
 }

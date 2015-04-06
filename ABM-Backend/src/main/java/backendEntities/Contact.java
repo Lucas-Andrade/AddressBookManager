@@ -52,6 +52,10 @@ public abstract class Contact {
 		this.contactId = contactId;
 	}
 	
-	
+	/**
+	 * Compares the specified object with this set for equality.
+	 */
+	@Override
+	public abstract boolean equals(Object object);
 	
 }

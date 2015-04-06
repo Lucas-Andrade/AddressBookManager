@@ -39,6 +39,13 @@ public class PersonTest {
 	}
 	
 	@Test
+	public void shouldBeDifferentDespiteHavingTheSameName2(){
+		Person person = constructPerson();
+		Person person2 = new Person("name", new Contact[]{new Address("other address"), new PhoneNumber(123456789)});
+		assertFalse(person.equals(person2));
+	}
+	
+	@Test
 	public void shouldBeDifferentDespiteHavingSameContacts(){
 		Person person = constructPerson();
 		Contact[] contacts = constructContacts();

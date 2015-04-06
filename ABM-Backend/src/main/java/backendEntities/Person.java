@@ -1,6 +1,7 @@
 package backendEntities;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -79,22 +80,6 @@ public class Person extends BookableEntity {
 	public void setContacts(Set<Contact> contacts) {
 		this.contacts = contacts;
 	}
-
-//	/**
-//	 * Sets the {@code String} passed as parameter as the new name of the {@code this}
-//	 * {@code Person}.
-//	 * @param name
-//	 */
-//	public void setName(String name) {
-//		this.name = name;
-//	}
-//	
-//	/**
-//	 * @see BookableEntity#getName()
-//	 */
-//	public String getName(){
-//		return name;
-//	}
 	
 	/**
 	 * Generates {@code this} object's Hash Code.
@@ -133,10 +118,10 @@ public class Person extends BookableEntity {
 		if(! name.equals(person.getName()))
 			return false;
 		
-		if(! contacts.equals(person.getContacts())){
+		if(! checkContacts(person.getContacts())){
 			return false;
 		}
-		
+
 		return true;
 	}
 	
@@ -149,6 +134,44 @@ public class Person extends BookableEntity {
 			return 0;
 		
 		return name.compareTo(obj.getName());
+	}
+	
+	
+	/**
+	 * Verifies if the {@code Set} passed as parameter has the same contacts as {@code this}. This means the {@code Set}s
+	 * must have the same size and that every element contained in one must be contained in the other. This is verified
+	 * by using the method {@link Contact#equals(Object)}.
+	 * 
+	 * @param otherSet
+	 * @return {@code true} if the {@code Set} passed as parameter has the same contacts as {@code this}.
+	 */
+	private boolean checkContacts(Set<Contact> otherSet) {
+		
+		if(otherSet.size() != contacts.size())
+			return false;
+		
+		Iterator<Contact> otherIterator = otherSet.iterator();
+		while(otherIterator.hasNext()){
+			
+			Contact contact = otherIterator.next();
+			Iterator<Contact> thisIterator = contacts.iterator();
+			boolean hasNext = thisIterator.hasNext();
+			while(hasNext){
+				
+				if(thisIterator.next().equals(contact)){
+					break;
+				}
+				
+				hasNext = thisIterator.hasNext();
+				if(!hasNext) {
+					return false;
+				}
+			}
+			
+		}
+		
+		return true;
+		
 	}
 	
 }

@@ -79,4 +79,30 @@ public class PhoneNumber extends Contact{
 		}
 	}
 	
+	/**
+	 * Compares the specified object with this set for equality. If the object is an instance of
+	 * {@code PhoneNumber} and stores the same contact, {@code true} is returned.
+	 * 
+	 * @return {@code true} if the object passed as parameter is equal to {@code this}.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		
+		if(obj == null)
+			return false;
+		
+		if(this == obj)
+			return true;
+		
+		if(! getClass().equals(obj.getClass()))
+			return false;
+		
+		PhoneNumber adr = (PhoneNumber)obj;
+		
+		if(!contact.equals(adr.getContact()))
+			return false;
+		
+		return true;
+	}
+	
 }
