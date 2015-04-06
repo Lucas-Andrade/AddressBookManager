@@ -12,6 +12,11 @@ import javax.persistence.Entity;
 public class PhoneNumber extends Contact{
 	
 	/**
+	 * The phone number.
+	 */
+	private String contact;
+	
+	/**
 	 * Constructs a new {@code PhoneNumber}, by receiving an integer number.
 	 * @param number
 	 */
@@ -29,6 +34,7 @@ public class PhoneNumber extends Contact{
 	 * Sets a new phone number in {@code this} {@code PhoneNumber} object
 	 * @param number
 	 */
+	@Override
 	public void setContact(String number) {
 		
 		Integer intNumber;
@@ -55,6 +61,7 @@ public class PhoneNumber extends Contact{
 	 * @see Contact#getContact()
 	 * @return the phone number stored in {@code this}, as a {@code String}.
 	 */
+	@Override
 	public String getContact() {
 		return contact;
 	}

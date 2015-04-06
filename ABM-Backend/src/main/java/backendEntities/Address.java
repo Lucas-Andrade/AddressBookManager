@@ -16,10 +16,10 @@ public class Address extends Contact{
 //	 */
 //	private final String NAME = "Address";
 	
-//	/**
-//	 * The address of the {@code Entity}.
-//	 */
-//	private String address;
+	/**
+	 * The address.
+	 */
+	private String contact;
 	
 	/**
 	 * Constructs a new address using a {@code String}.
@@ -46,6 +46,7 @@ public class Address extends Contact{
 	 * Sets a new address in {@code this} {@code Address}
 	 * @param address
 	 */
+	@Override
 	public void setContact(String address) {
 		this.contact = address;
 	}

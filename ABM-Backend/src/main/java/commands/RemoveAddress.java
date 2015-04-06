@@ -5,6 +5,7 @@ import java.util.Iterator;
 import org.hibernate.Session;
 
 import backendEntities.Address;
+import backendEntities.ApplicationUser;
 import backendEntities.Contact;
 import backendEntities.Person;
 
@@ -24,7 +25,12 @@ public class RemoveAddress extends DatabaseCommand{
 	/**
 	 * Name of the {@code Person}.
 	 */
-	private String name;
+	private String personName;
+
+	/**
+	 * The username of the {@code ApplicationUser} to whom the person is assigned
+	 */
+	private String username;
 
 	/**
 	 * Constructs the {@code Command} that removes the address passed as parameter
@@ -32,9 +38,10 @@ public class RemoveAddress extends DatabaseCommand{
 	 * @param personName
 	 * @param address
 	 */
-	public RemoveAddress(String personName, String address){
-		this.name = personName;
+	public RemoveAddress(String username, String personName, String address){
+		this.personName = personName;
 		this.address = address;
+		this.username = username;
 	}
 	
 	/**
@@ -44,10 +51,11 @@ public class RemoveAddress extends DatabaseCommand{
 
 		Session session = openSession();
 		try{
+			ApplicationUser user = (ApplicationUser) session.get(ApplicationUser.class, username);
 			
-			Person person = (Person)session.get(Person.class, name);
+			Person person = getThePerson(user, personName);
 			removeTheAddress(person, session);
-			session.update(person);
+			session.update(user);
 			session.getTransaction().commit();
 			
 		} catch(Exception e) {

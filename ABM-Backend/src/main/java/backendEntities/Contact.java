@@ -1,6 +1,7 @@
 package backendEntities;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.InheritanceType;
 import javax.persistence.Inheritance;
@@ -19,15 +20,11 @@ import javax.persistence.Inheritance;
 public abstract class Contact {
 	
 	/**
-	 * The contact itself
+	 * {@code Contact}'s unique identifier
 	 */
 	@Id
-	protected String contact;
-	
-//	/**
-//	 * @return the name of the {@code Property}.
-//	 */
-//	public abstract String getContactName();
+	@GeneratedValue
+	public int contactId;
 	
 	/**
 	 * @return the {@code Contact}'s information as a {@code String}.
@@ -39,5 +36,22 @@ public abstract class Contact {
 	 * @param contact
 	 */
 	public abstract void setContact(String contact);
+
+	/**
+	 * @return {@code this} contact's identifier
+	 */
+	public int getContactId() {
+		return contactId;
+	}
+
+	/**
+	 * Sets a new identifier
+	 * @param contactId
+	 */
+	public void setContactId(int contactId) {
+		this.contactId = contactId;
+	}
+	
+	
 	
 }

@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import org.hibernate.Session;
 
+import backendEntities.ApplicationUser;
 import backendEntities.Contact;
 import backendEntities.Person;
 import backendEntities.PhoneNumber;
@@ -19,28 +20,53 @@ public class UpdatePhoneNumber extends DatabaseCommand{
 	/**
 	 * name of the {@code Person}
 	 */
-	private String name;
+	private String personName;
 	
 	/**
 	 * Future number of the {@code Person}
 	 */
-	private int newNumber;
+	private String newNumber;
 	
 	/**
 	 * Old number of the {@code Person}
 	 */
-	private int oldNumber;
+	private String oldNumber;
 
 	/**
-	 * Constructs the command that will update the password of the {@code ApplicationUser}.
-	 * in the database.
-	 * @param username
-	 * @param newPassword
+	 * Username of the {@code ApplicationUser} to whom the {@code Person} is associated
 	 */
-	public UpdatePhoneNumber(String personName, int oldNumber, int newNumber) {
-		this.name = personName;
+	private String username;
+
+	/**
+	 * Constructs the command that will update the phone number of the {@code ApplicationUser}
+	 * in the database.
+	 * 
+	 * @param username
+	 * @param personName
+	 * @param oldNumber
+	 * @param newNumber
+	 */
+	public UpdatePhoneNumber(String username, String personName, int oldNumber, int newNumber) {
+		this.personName = personName;
+		this.newNumber = String.valueOf(newNumber);
+		this.oldNumber = String.valueOf(oldNumber);
+		this.username = username;
+	}
+	
+	/**
+	 * Constructs the command that will update the phone number of the {@code ApplicationUser}
+	 * in the database.
+	 * 
+	 * @param username
+	 * @param personName
+	 * @param oldNumber
+	 * @param newNumber
+	 */
+	public UpdatePhoneNumber(String username, String personName, String oldNumber, String newNumber) {
+		this.personName = personName;
 		this.newNumber = newNumber;
 		this.oldNumber = oldNumber;
+		this.username = username;
 	}
 	
 	/**
@@ -50,11 +76,12 @@ public class UpdatePhoneNumber extends DatabaseCommand{
 		
 		Session session = openSession();
 		try{
+			ApplicationUser user = (ApplicationUser) session.get(ApplicationUser.class, username);
 			
-			Person person = (Person) session.get(Person.class, name);
+			Person person = getThePerson(user, personName);
 			updateTheNumber(person);
 			
-			session.update(person);
+			session.update(user);
 			session.getTransaction().commit();
 			
 		} catch(Exception e) {

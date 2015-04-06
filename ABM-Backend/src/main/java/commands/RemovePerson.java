@@ -2,7 +2,7 @@ package commands;
 
 import org.hibernate.Session;
 
-import backendEntities.Person;
+import backendEntities.ApplicationUser;
 
 /**
  * Removes a {@code Person} from the database.
@@ -15,15 +15,21 @@ public class RemovePerson extends DatabaseCommand{
 	/**
 	 * Name of the {@code Person} to be removed.
 	 */
-	private String name;
+	private String personName;
+	
+	/**
+	 * Username to whom the {@code Person} is assigned to.
+	 */
+	private String username;
 
 	/**
 	 * Constructs the command that removes the person with the name passed as parameter
 	 * from the database.
-	 * @param name
+	 * @param personName
 	 */
-	public RemovePerson(String name){
-		this.name = name;
+	public RemovePerson(String username, String personName){
+		this.personName = personName;
+		this.username = username;
 	}
 	
 	/**
@@ -33,9 +39,12 @@ public class RemovePerson extends DatabaseCommand{
 		
 		Session session = openSession();
 		try{
-			Person person = (Person) session.get(Person.class, name);
+			ApplicationUser user = (ApplicationUser) session.get(ApplicationUser.class, username);
 			
-			session.delete(person);
+			if( user.getBookedEntities().remove(personName) == null){
+				throw new CommandException();
+			}
+			session.update(user);
 			session.getTransaction().commit();
 			
 		} catch(Exception e) {

@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import org.hibernate.Session;
 
+import backendEntities.ApplicationUser;
 import backendEntities.Contact;
 import backendEntities.Person;
 import backendEntities.PhoneNumber;
@@ -19,12 +20,17 @@ public class RemovePhoneNumber extends DatabaseCommand{
 	/**
 	 * Number to be removed.
 	 */
-	private int number;
+	private String number;
 	
 	/**
 	 * Name of the {@code Person}.
 	 */
-	private String name;
+	private String personName;
+
+	/**
+	 * The username of the {@code ApplicationUser} to whom the person is assigned.
+	 */
+	private String username;
 
 	/**
 	 * Constructs the {@code Command} that removes the number passed as parameter
@@ -32,9 +38,22 @@ public class RemovePhoneNumber extends DatabaseCommand{
 	 * @param personName
 	 * @param number
 	 */
-	public RemovePhoneNumber(String personName, int number){
-		this.name = personName;
+	public RemovePhoneNumber(String username, String personName, int number){
+		this.personName = personName;
+		this.number = String.valueOf(number);
+		this.username = username;
+	}
+	
+	/**
+	 * Constructs the {@code Command} that removes the number passed as parameter
+	 * from the {@code Person} whose name has been passed as parameter.
+	 * @param personName
+	 * @param number
+	 */
+	public RemovePhoneNumber(String username, String personName, String number){
+		this.personName = personName;
 		this.number = number;
+		this.username = username;
 	}
 	
 	/**
@@ -44,10 +63,11 @@ public class RemovePhoneNumber extends DatabaseCommand{
 
 		Session session = openSession();
 		try{
+			ApplicationUser user = (ApplicationUser) session.get(ApplicationUser.class, username);
 			
-			Person person = (Person) session.get(Person.class, name);
+			Person person = getThePerson(user, personName);
 			removeTheNumber(person, session);
-			session.update(person);
+			session.update(user);
 			session.getTransaction().commit();
 			
 		} catch(Exception e) {
