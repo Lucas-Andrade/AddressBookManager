@@ -25,7 +25,6 @@ public abstract class BookableEntity implements NamedEntity{
 	@GeneratedValue
 	@Column(name = "Entity_ID")
 	private int EntityId;
-	
 		
 	/**
 	 * Compares the name of {@code this} with the name of the {@code Entity}

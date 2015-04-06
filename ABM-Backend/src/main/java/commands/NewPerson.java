@@ -2,6 +2,7 @@ package commands;
 
 import org.hibernate.Session;
 
+import backendEntities.ApplicationUser;
 import backendEntities.Person;
 
 /**
@@ -15,15 +16,21 @@ public class NewPerson extends DatabaseCommand{
 	/**
 	 * The name of the {@code Person} that will be added to the database.
 	 */
-	private String name;
+	private String personName;
+	
+	/**
+	 * Username to which the new {@code Person} will be associated
+	 */
+	private String username;
 
 	/**
 	 * Constructs the command that will instantiate a {@code Person} with the name
 	 * passed as parameter, and add it to the database.
-	 * @param name
+	 * @param personName
 	 */
-	public NewPerson(String name) {
-		this.name = name;
+	public NewPerson(String username, String personName) {
+		this.personName = personName;
+		this.username = username;
 	}
 	
 	/**
@@ -33,9 +40,12 @@ public class NewPerson extends DatabaseCommand{
 
 		Session session = openSession();
 		try{
-			Person person = new Person(name);
 			
-			session.save(person);
+			ApplicationUser user = (ApplicationUser) session.get(ApplicationUser.class, username);
+			Person person = new Person(personName);
+			user.getBookedEntities().put(personName, person);
+			
+			session.update(user);
 			session.getTransaction().commit();
 			
 		} catch(Exception e) {
@@ -43,7 +53,6 @@ public class NewPerson extends DatabaseCommand{
 		} finally {
 			session.close();
 		}
-		
 	}
 
 	

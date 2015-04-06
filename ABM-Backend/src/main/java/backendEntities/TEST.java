@@ -13,8 +13,8 @@ public class TEST {
     	SessionFactory sessionFact = createSessionFactory();
 		Session session = sessionFact.openSession();
 		
-		ApplicationUser user = new ApplicationUser("user", "pass", "email@l.l");
-		Person person = new Person("name", new Address("street"));
+		ApplicationUser user = new ApplicationUser("utilizador", "palavra passe", "email@coisas.sitio");
+		Person person = new Person("nome", new Address("rua do lugar"));
 		user.getBookedEntities().put(person.getName(), person);
 		
 		session.beginTransaction();

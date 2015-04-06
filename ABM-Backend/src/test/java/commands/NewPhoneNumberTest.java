@@ -13,10 +13,10 @@ import backendEntities.ApplicationUser;
 import backendEntities.Contact;
 import backendEntities.Person;
 
-public class newAddressTest {
+public class NewPhoneNumberTest {
 
 	@Test
-	public void shouldAddAddress() throws CommandException {
+	public void shouldAddThePhoneNumber() throws CommandException {
 		
 		SessionFactory sessionFact = SessionFactorySingleton.getInstance();
 		Session session = sessionFact.openSession();
@@ -31,7 +31,7 @@ public class newAddressTest {
 		
 		session.close();
 		
-		new NewAddress("user", "name", "street").execute();
+		new NewPhoneNumber("user", "name", "123456789").execute();
 		
 		Session session2 = sessionFact.openSession();
 		session2.beginTransaction();
@@ -43,16 +43,28 @@ public class newAddressTest {
 		Iterator<Contact> iterator = set.iterator();
 		
 		assertEquals(1, set.size());
-		assertEquals("street", iterator.next().getContact());
+		assertEquals("123456789", iterator.next().getContact());
 		
 		session2.getTransaction().commit();
 		session2.close();
 	}
 	
 	@Test(expected = CommandException.class)
-	public void shouldNotAddAddress() throws CommandException{
+	public void shouldNotAddThePhoneNumberWithANumberTooShort() throws CommandException{
 		
-		new NewAddress("a user that does not exist", "a person that does not exist", "street").execute();
+		new NewPhoneNumber("user", "name", "123").execute();
+	}
+	
+	@Test(expected = CommandException.class)
+	public void shouldNotAddThePhoneNumberToAUserThatDoesNotExist() throws CommandException{
+		
+		new NewPhoneNumber("a user that does not exist", "name", "123456789").execute();
+	}
+	
+	@Test(expected = CommandException.class)
+	public void shouldNotAddThePhoneNumberToAPersonThatDoesNotExist() throws CommandException{
+		
+		new NewPhoneNumber("user", "a person that does not exist", "123456789").execute();
 	}
 
 }

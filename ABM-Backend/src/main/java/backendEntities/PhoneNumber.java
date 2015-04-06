@@ -11,11 +11,6 @@ import javax.persistence.Entity;
 @Entity
 public class PhoneNumber extends Contact{
 	
-//	/**
-//	 * The name of this type of {@code Contact}.
-//	 */
-//	private final String NAME = "Phone Number";
-	
 	/**
 	 * Constructs a new {@code PhoneNumber}, by receiving an integer number.
 	 * @param number
@@ -35,6 +30,15 @@ public class PhoneNumber extends Contact{
 	 * @param number
 	 */
 	public void setContact(String number) {
+		
+		Integer intNumber;
+		try{
+			intNumber = Integer.parseInt(number);
+		} catch(NumberFormatException e) {
+			throw new IllegalArgumentException();
+		}
+		
+		checkPhoneNumber(intNumber);
 		this.contact = number;
 	}
 
@@ -43,15 +47,9 @@ public class PhoneNumber extends Contact{
 	 * @param number
 	 */
 	public void setContact(int number) {
+		checkPhoneNumber(number);
 		this.contact = String.valueOf(number);
 	}
-
-//	/**
-//	 * @see Contact#getContactName()
-//	 */
-//	public String getContactName() {
-//		return NAME;
-//	}
 	
 	/**
 	 * @see Contact#getContact()
