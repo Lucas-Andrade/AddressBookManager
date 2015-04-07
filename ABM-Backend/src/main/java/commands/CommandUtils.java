@@ -6,20 +6,26 @@ import org.hibernate.SessionFactory;
 import backendEntities.ApplicationUser;
 import backendEntities.BookableEntity;
 import backendEntities.Person;
+
 /**
- * Abstract class of the {@code Command}s that save, update and remove data to the database.
+ * Has some static utilitarian methods, that are used in the {@code Command}s.
  * 
  * @author Lucas Andrade
  *
  */
-public abstract class DatabaseCommand implements Command{
+public class CommandUtils {
 
 	/**
-	 * Opens and returns a {@code Session}.
+	 * So that it is not possible to instantiate {@code CommandUtils} objects.
+	 */
+	private CommandUtils(){}
+	
+	/**
+	 * Opens and returns a {@code Session}. This {@code Session} must be closed later.
 	 * @return a {@code Session}
 	 * @throws CommandException
 	 */
-	public Session openSession() throws CommandException{
+	public static Session openSession() throws CommandException{
 		try{
 			SessionFactory sessionFact = SessionFactorySingleton.getInstance();
 			Session session = sessionFact.openSession();
@@ -38,13 +44,14 @@ public abstract class DatabaseCommand implements Command{
 	 * @return the {@code Person} with the name passed as parameter
 	 * @throws CommandException
 	 */
-	protected Person getThePerson(ApplicationUser user, String personName) throws CommandException {
+	public static Person getThePerson(ApplicationUser user, String personName) throws CommandException {
 		BookableEntity entity = user.getBookedEntities().get(personName);
 		
 		if(entity == null || ! (entity instanceof Person)){
 			throw new CommandException();
 		}
 		
-		return (Person)entity;	
+		return (Person)entity;
 	}
+	
 }

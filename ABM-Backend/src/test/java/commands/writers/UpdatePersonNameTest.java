@@ -1,21 +1,21 @@
-package commands;
+package commands.writers;
 
 import static org.junit.Assert.*;
-
-import java.util.Map;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
 
+import commands.CommandException;
+import commands.SessionFactorySingleton;
+import commands.writers.UpdatePersonName;
 import backendEntities.ApplicationUser;
-import backendEntities.BookableEntity;
 import backendEntities.Person;
 
-public class RemovePersonTest {
+public class UpdatePersonNameTest {
 
 	@Test
-	public void shouldRemoveThePerson() throws CommandException {
+	public void shouldUpdateThePersonName() throws CommandException {
 		
 		SessionFactory sessionFact = SessionFactorySingleton.getInstance();
 		Session session = sessionFact.openSession();
@@ -30,25 +30,31 @@ public class RemovePersonTest {
 		
 		session.close();
 		
-		new RemovePerson("user", "name").execute();
+		new UpdatePersonName("user", "name", "best name").execute();
 		
 		Session session2 = sessionFact.openSession();
 		session2.beginTransaction();
 		ApplicationUser user2 = (ApplicationUser) session2.get(ApplicationUser.class, "user");
 		
-		Map<String, BookableEntity> map = user2.getBookedEntities();
+		Person updatedPerson = (Person) user2.getBookedEntities().get("best name");
 		
-		assertEquals(0, map.size());
-		assertTrue(map.get("name") == null);
+		System.out.println(updatedPerson.getName());
+		assertTrue(updatedPerson != null);
 		
 		session2.getTransaction().commit();
 		session2.close();
 	}
 	
 	@Test(expected = CommandException.class)
-	public void shouldNotRemoveFromAUserThatDoesNotExist() throws CommandException{
+	public void shouldNotUpdateAUserThatDoesNotExist() throws CommandException{
 		
-		new RemovePerson("does not exist", "name").execute();
+		new UpdatePersonName("a user that does not exist", "name", "best name").execute();
+	}
+	
+	@Test(expected = CommandException.class)
+	public void shouldNotUpdateAPersonThatDoesNotExist() throws CommandException{
+		
+		new UpdatePersonName("user", "a person that does not exist", "best name").execute();
 	}
 
 }

@@ -1,7 +1,9 @@
-package commands;
+package commands.writers;
 
 import org.hibernate.Session;
 
+import commands.CommandException;
+import commands.CommandUtils;
 import backendEntities.ApplicationUser;
 
 /**
@@ -10,7 +12,7 @@ import backendEntities.ApplicationUser;
  * @author Lucas Andrade
  *
  */
-public class NewUser extends DatabaseCommand{
+public class NewUser implements CommandWriter{
 
 	/**
 	 * The username of the {@code ApplicationUser} to be added to the database.
@@ -42,11 +44,11 @@ public class NewUser extends DatabaseCommand{
 	}
 	
 	/**
-	 * @see DatabaseCommand#execute()
+	 * @see CommandWriter#execute()
 	 */
 	public void execute() throws CommandException {
 		
-		Session session = openSession();
+		Session session = CommandUtils.openSession();
 		try{
 			ApplicationUser user = new ApplicationUser(username, password, email);
 			

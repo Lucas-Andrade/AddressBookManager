@@ -12,6 +12,11 @@ import javax.persistence.Entity;
 public class PhoneNumber extends Contact{
 	
 	/**
+	 * The name of this type of {@code Contact}.
+	 */
+	public final String NAME = "Phone Number";
+	
+	/**
 	 * The phone number.
 	 */
 	private String contact;
@@ -103,6 +108,13 @@ public class PhoneNumber extends Contact{
 			return false;
 		
 		return true;
+	}
+	
+	/**
+	 * @return the name of the type of contact.
+	 */
+	public String getName() {
+		return NAME;
 	}
 	
 }

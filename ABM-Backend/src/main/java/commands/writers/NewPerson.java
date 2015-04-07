@@ -1,7 +1,9 @@
-package commands;
+package commands.writers;
 
 import org.hibernate.Session;
 
+import commands.CommandException;
+import commands.CommandUtils;
 import backendEntities.ApplicationUser;
 import backendEntities.Person;
 
@@ -11,7 +13,7 @@ import backendEntities.Person;
  * @author Lucas Andrade
  *
  */
-public class NewPerson extends DatabaseCommand{
+public class NewPerson implements CommandWriter{
 
 	/**
 	 * The name of the {@code Person} that will be added to the database.
@@ -38,7 +40,7 @@ public class NewPerson extends DatabaseCommand{
 	 */
 	public void execute() throws CommandException {
 
-		Session session = openSession();
+		Session session = CommandUtils.openSession();
 		try{
 			
 			ApplicationUser user = (ApplicationUser) session.get(ApplicationUser.class, username);

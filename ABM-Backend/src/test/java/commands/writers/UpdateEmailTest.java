@@ -1,4 +1,4 @@
-package commands;
+package commands.writers;
 
 import static org.junit.Assert.*;
 
@@ -6,19 +6,23 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
 
+import commands.CommandException;
+import commands.SessionFactorySingleton;
+import commands.writers.UpdateEmail;
+import backendEntities.Address;
 import backendEntities.ApplicationUser;
 import backendEntities.Person;
 
-public class UpdatePersonNameTest {
+public class UpdateEmailTest {
 
 	@Test
-	public void shouldUpdateThePersonName() throws CommandException {
+	public void shouldUpdateTheEmail() throws CommandException {
 		
 		SessionFactory sessionFact = SessionFactorySingleton.getInstance();
 		Session session = sessionFact.openSession();
 		
 		ApplicationUser user = new ApplicationUser("user", "pass", "email@l.l");
-		Person person = new Person("name");
+		Person person = new Person("name", new Address("street"));
 		user.getBookedEntities().put(person.getName(), person);
 		
 		session.beginTransaction();
@@ -27,31 +31,29 @@ public class UpdatePersonNameTest {
 		
 		session.close();
 		
-		new UpdatePersonName("user", "name", "best name").execute();
+		new UpdateEmail("user", "newEmail@bestemail.awessome").execute();
 		
 		Session session2 = sessionFact.openSession();
 		session2.beginTransaction();
 		ApplicationUser user2 = (ApplicationUser) session2.get(ApplicationUser.class, "user");
 		
-		Person updatedPerson = (Person) user2.getBookedEntities().get("best name");
-		
-		System.out.println(updatedPerson.getName());
-		assertTrue(updatedPerson != null);
+		assertEquals("newEmail@bestemail.awessome", user2.getEmail());
 		
 		session2.getTransaction().commit();
 		session2.close();
 	}
 	
 	@Test(expected = CommandException.class)
-	public void shouldNotUpdateAUserThatDoesNotExist() throws CommandException{
+	public void shouldNotUpdateToAnInvalidEmail() throws CommandException{
 		
-		new UpdatePersonName("a user that does not exist", "name", "best name").execute();
+		new UpdateEmail("user", "invalid").execute();
 	}
 	
 	@Test(expected = CommandException.class)
-	public void shouldNotUpdateAPersonThatDoesNotExist() throws CommandException{
+	public void shouldNotUpdateAUserThatDoesNotExist() throws CommandException{
 		
-		new UpdatePersonName("user", "a person that does not exist", "best name").execute();
+		new UpdateEmail("does not exist", "newEmail@bestemail.awessome").execute();
 	}
+
 
 }

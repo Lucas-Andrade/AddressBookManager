@@ -1,7 +1,9 @@
-package commands;
+package commands.writers;
 
 import org.hibernate.Session;
 
+import commands.CommandException;
+import commands.CommandUtils;
 import backendEntities.ApplicationUser;
 
 /**
@@ -10,7 +12,7 @@ import backendEntities.ApplicationUser;
  * @author Lucas Andrade
  *
  */
-public class UpdatePassword extends DatabaseCommand{
+public class UpdatePassword implements CommandWriter{
 
 	/**
 	 * username of the {@code ApplicationUser}
@@ -38,7 +40,7 @@ public class UpdatePassword extends DatabaseCommand{
 	 */
 	public void execute() throws CommandException {
 		
-		Session session = openSession();
+		Session session = CommandUtils.openSession();
 		try{
 			
 			ApplicationUser user = (ApplicationUser) session.get(ApplicationUser.class, username);

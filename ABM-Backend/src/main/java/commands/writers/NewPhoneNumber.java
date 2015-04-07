@@ -1,7 +1,9 @@
-package commands;
+package commands.writers;
 
 import org.hibernate.Session;
 
+import commands.CommandException;
+import commands.CommandUtils;
 import backendEntities.ApplicationUser;
 import backendEntities.Person;
 import backendEntities.PhoneNumber;
@@ -12,7 +14,7 @@ import backendEntities.PhoneNumber;
  * @author Lucas Andrade
  *
  */
-public class NewPhoneNumber extends DatabaseCommand {
+public class NewPhoneNumber implements CommandWriter {
 
 	/**
 	 * Name of the {@code Person} to whom the {@code PhoneNumber} will be associated
@@ -58,11 +60,11 @@ public class NewPhoneNumber extends DatabaseCommand {
 	 */
 	public void execute() throws CommandException {
 
-		Session session = openSession();
+		Session session = CommandUtils.openSession();
 		try{ 
 			ApplicationUser user = (ApplicationUser) session.get(ApplicationUser.class, username);
 			
-			Person person = getThePerson(user, personName);
+			Person person = CommandUtils.getThePerson(user, personName);
 			PhoneNumber phoneNumber = new PhoneNumber();
 			phoneNumber.setContact(number);
 			person.getContacts().add(phoneNumber);

@@ -1,22 +1,24 @@
-package commands;
+package commands.writers;
 
 import static org.junit.Assert.*;
 
-import java.util.Iterator;
-import java.util.Set;
+import java.util.Map;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
 
+import commands.CommandException;
+import commands.SessionFactorySingleton;
+import commands.writers.RemovePerson;
 import backendEntities.ApplicationUser;
-import backendEntities.Contact;
+import backendEntities.BookableEntity;
 import backendEntities.Person;
 
-public class newAddressTest {
+public class RemovePersonTest {
 
 	@Test
-	public void shouldAddAddress() throws CommandException {
+	public void shouldRemoveThePerson() throws CommandException {
 		
 		SessionFactory sessionFact = SessionFactorySingleton.getInstance();
 		Session session = sessionFact.openSession();
@@ -31,28 +33,25 @@ public class newAddressTest {
 		
 		session.close();
 		
-		new NewAddress("user", "name", "street").execute();
+		new RemovePerson("user", "name").execute();
 		
 		Session session2 = sessionFact.openSession();
 		session2.beginTransaction();
 		ApplicationUser user2 = (ApplicationUser) session2.get(ApplicationUser.class, "user");
 		
-		Person updatedPerson = (Person) user2.getBookedEntities().get("name");
+		Map<String, BookableEntity> map = user2.getBookedEntities();
 		
-		Set<Contact> set = updatedPerson.getContacts();
-		Iterator<Contact> iterator = set.iterator();
-		
-		assertEquals(1, set.size());
-		assertEquals("street", iterator.next().getContact());
+		assertEquals(0, map.size());
+		assertTrue(map.get("name") == null);
 		
 		session2.getTransaction().commit();
 		session2.close();
 	}
 	
 	@Test(expected = CommandException.class)
-	public void shouldNotAddAddress() throws CommandException{
+	public void shouldNotRemoveFromAUserThatDoesNotExist() throws CommandException{
 		
-		new NewAddress("a user that does not exist", "a person that does not exist", "street").execute();
+		new RemovePerson("does not exist", "name").execute();
 	}
 
 }

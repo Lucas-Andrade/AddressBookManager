@@ -1,9 +1,11 @@
-package commands;
+package commands.writers;
 
 import java.util.Iterator;
 
 import org.hibernate.Session;
 
+import commands.CommandException;
+import commands.CommandUtils;
 import backendEntities.ApplicationUser;
 import backendEntities.Contact;
 import backendEntities.Person;
@@ -15,7 +17,7 @@ import backendEntities.PhoneNumber;
  * @author Lucas Andrade
  *
  */
-public class RemovePhoneNumber extends DatabaseCommand{
+public class RemovePhoneNumber implements CommandWriter{
 
 	/**
 	 * Number to be removed.
@@ -61,11 +63,11 @@ public class RemovePhoneNumber extends DatabaseCommand{
 	 */
 	public void execute() throws CommandException {
 
-		Session session = openSession();
+		Session session = CommandUtils.openSession();
 		try{
 			ApplicationUser user = (ApplicationUser) session.get(ApplicationUser.class, username);
 			
-			Person person = getThePerson(user, personName);
+			Person person = CommandUtils.getThePerson(user, personName);
 			removeTheNumber(person, session);
 			session.update(user);
 			session.getTransaction().commit();

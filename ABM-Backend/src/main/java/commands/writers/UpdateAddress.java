@@ -1,9 +1,11 @@
-package commands;
+package commands.writers;
 
 import java.util.Iterator;
 
 import org.hibernate.Session;
 
+import commands.CommandException;
+import commands.CommandUtils;
 import backendEntities.Address;
 import backendEntities.ApplicationUser;
 import backendEntities.Contact;
@@ -15,7 +17,7 @@ import backendEntities.Person;
  * @author Lucas Andrade
  *
  */
-public class UpdateAddress extends DatabaseCommand{
+public class UpdateAddress implements CommandWriter{
 
 	/**
 	 * name of the {@code Person}
@@ -56,11 +58,11 @@ public class UpdateAddress extends DatabaseCommand{
 	 */
 	public void execute() throws CommandException {
 		
-		Session session = openSession();
+		Session session = CommandUtils.openSession();
 		try{
 			ApplicationUser user = (ApplicationUser) session.get(ApplicationUser.class, username);
 			
-			Person person = getThePerson(user, personName);
+			Person person = CommandUtils.getThePerson(user, personName);
 			updateTheAddress(person, session);
 			
 			session.update(user);

@@ -1,7 +1,9 @@
-package commands;
+package commands.writers;
 
 import org.hibernate.Session;
 
+import commands.CommandException;
+import commands.CommandUtils;
 import backendEntities.Address;
 import backendEntities.ApplicationUser;
 import backendEntities.Person;
@@ -12,7 +14,7 @@ import backendEntities.Person;
  * @author Lucas Address
  *
  */
-public class NewAddress extends DatabaseCommand{
+public class NewAddress implements CommandWriter{
 
 	/**
 	 * Name of the {@code Person} to whom the {@code Address} will be added.
@@ -46,11 +48,11 @@ public class NewAddress extends DatabaseCommand{
 	 */
 	public void execute() throws CommandException {
 
-		Session session = openSession();
+		Session session = CommandUtils.openSession();
 		try{
 			ApplicationUser user = (ApplicationUser) session.get(ApplicationUser.class, username);
 			
-			Person person = getThePerson(user, personName);
+			Person person = CommandUtils.getThePerson(user, personName);
 			Address addressObj = new Address(address);
 			person.getContacts().add(addressObj);
 			

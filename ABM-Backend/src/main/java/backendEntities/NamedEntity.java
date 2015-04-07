@@ -1,5 +1,7 @@
 package backendEntities;
 
+import org.json.JSONObject;
+
 /**
  * Interface of all named entities.
  * 
@@ -18,4 +20,9 @@ public interface NamedEntity {
 	 * @param name
 	 */
 	public void setName(String name);
+	
+	/**
+	 * @return a {@code JSONObject} representation of the {@code NamedEntity}.
+	 */
+	public abstract JSONObject getJson();
 }

@@ -1,28 +1,31 @@
-package commands;
+package commands.writers;
 
 import static org.junit.Assert.*;
 
+import java.util.Iterator;
 import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
 
+import commands.CommandException;
+import commands.SessionFactorySingleton;
+import commands.writers.NewPhoneNumber;
 import backendEntities.ApplicationUser;
 import backendEntities.Contact;
 import backendEntities.Person;
-import backendEntities.PhoneNumber;
 
-public class RemovePhoneNumberTest {
+public class NewPhoneNumberTest {
 
 	@Test
-	public void shouldRemoveThePhoneNumber() throws CommandException {
+	public void shouldAddThePhoneNumber() throws CommandException {
 		
 		SessionFactory sessionFact = SessionFactorySingleton.getInstance();
 		Session session = sessionFact.openSession();
 		
 		ApplicationUser user = new ApplicationUser("user", "pass", "email@l.l");
-		Person person = new Person("name", new PhoneNumber(123456789));
+		Person person = new Person("name");
 		user.getBookedEntities().put(person.getName(), person);
 		
 		session.beginTransaction();
@@ -31,7 +34,7 @@ public class RemovePhoneNumberTest {
 		
 		session.close();
 		
-		new RemovePhoneNumber("user", "name", "123456789").execute();
+		new NewPhoneNumber("user", "name", "123456789").execute();
 		
 		Session session2 = sessionFact.openSession();
 		session2.beginTransaction();
@@ -40,29 +43,31 @@ public class RemovePhoneNumberTest {
 		Person updatedPerson = (Person) user2.getBookedEntities().get("name");
 		
 		Set<Contact> set = updatedPerson.getContacts();
+		Iterator<Contact> iterator = set.iterator();
 		
-		assertEquals(0, set.size());
+		assertEquals(1, set.size());
+		assertEquals("123456789", iterator.next().getContact());
 		
 		session2.getTransaction().commit();
 		session2.close();
 	}
 	
 	@Test(expected = CommandException.class)
-	public void shouldNotRemoveAPhoneNumberThatDoesNotExist() throws CommandException{
+	public void shouldNotAddThePhoneNumberWithANumberTooShort() throws CommandException{
 		
-		new RemoveAddress("user", "name", "does not exist").execute();
+		new NewPhoneNumber("user", "name", "123").execute();
 	}
 	
 	@Test(expected = CommandException.class)
-	public void shouldNotRemoveFromAPersonThatDoesNotExist() throws CommandException{
+	public void shouldNotAddThePhoneNumberToAUserThatDoesNotExist() throws CommandException{
 		
-		new RemoveAddress("user", "does not exist", "street").execute();
+		new NewPhoneNumber("a user that does not exist", "name", "123456789").execute();
 	}
 	
 	@Test(expected = CommandException.class)
-	public void shouldNotRemoveFromAnUserThatDoesNotExist() throws CommandException{
+	public void shouldNotAddThePhoneNumberToAPersonThatDoesNotExist() throws CommandException{
 		
-		new RemoveAddress("does not exist", "name", "street").execute();
+		new NewPhoneNumber("user", "a person that does not exist", "123456789").execute();
 	}
 
 }

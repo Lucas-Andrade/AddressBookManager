@@ -1,4 +1,4 @@
-package commands;
+package commands.writers;
 
 import static org.junit.Assert.*;
 
@@ -9,21 +9,24 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
 
-import backendEntities.Address;
+import commands.CommandException;
+import commands.SessionFactorySingleton;
+import commands.writers.UpdatePhoneNumber;
 import backendEntities.ApplicationUser;
 import backendEntities.Contact;
 import backendEntities.Person;
+import backendEntities.PhoneNumber;
 
-public class UpdateAddressTest {
+public class UpdatePhoneNumberTest {
 
 	@Test
-	public void shouldUpdateTheAddress() throws CommandException {
+	public void shouldUpdateThePhoneNumber() throws CommandException {
 		
 		SessionFactory sessionFact = SessionFactorySingleton.getInstance();
 		Session session = sessionFact.openSession();
 		
 		ApplicationUser user = new ApplicationUser("user", "pass", "email@l.l");
-		Person person = new Person("name", new Address("street"));
+		Person person = new Person("name", new PhoneNumber(123456789));
 		user.getBookedEntities().put(person.getName(), person);
 		
 		session.beginTransaction();
@@ -32,7 +35,7 @@ public class UpdateAddressTest {
 		
 		session.close();
 		
-		new UpdateAddress("user", "name", "street", "the new street").execute();
+		new UpdatePhoneNumber("user", "name", "123456789", "987654321").execute();
 		
 		Session session2 = sessionFact.openSession();
 		session2.beginTransaction();
@@ -44,27 +47,28 @@ public class UpdateAddressTest {
 		Iterator<Contact> iterator = set.iterator();
 		
 		assertEquals(1, set.size());
-		assertEquals("the new street", iterator.next().getContact());
+		assertEquals("987654321", iterator.next().getContact());
 		
 		session2.getTransaction().commit();
 		session2.close();
 	}
+	
+	@Test(expected = CommandException.class)
+	public void shouldNotUpdateThePhoneNumberToANumberTooShort() throws CommandException{
+		
+		new UpdatePhoneNumber("user", "name", "123456789", "123").execute();
+	}
+	
+	@Test(expected = CommandException.class)
+	public void shouldNotUpdateThePhoneNumberToAUserThatDoesNotExist() throws CommandException{
+		
+		new UpdatePhoneNumber("a user that does not exist", "name", "123456789", "123456789").execute();
+	}
+	
+	@Test(expected = CommandException.class)
+	public void shouldNotUpdateThePhoneNumberToAPersonThatDoesNotExist() throws CommandException{
+		
+		new UpdatePhoneNumber("user", "a person that does not exist", "123456789", "123456789").execute();
+	}
 
-	@Test(expected = CommandException.class)
-	public void shouldNotUpdateAnAddressThatDoesNotExist() throws CommandException{
-		
-		new UpdateAddress("user", "name", "does not exist", "the new street").execute();
-	}
-	
-	@Test(expected = CommandException.class)
-	public void shouldNotUpdateFromAPersonThatDoesNotExist() throws CommandException{
-		
-		new UpdateAddress("user", "does not exist", "street", "the new street").execute();
-	}
-	
-	@Test(expected = CommandException.class)
-	public void shouldNotUpdateFromAnUserThatDoesNotExist() throws CommandException{
-		
-		new UpdateAddress("does not exist", "name", "street", "the new street").execute();
-	}
 }

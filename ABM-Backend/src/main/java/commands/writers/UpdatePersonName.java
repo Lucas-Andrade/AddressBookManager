@@ -1,9 +1,11 @@
-package commands;
+package commands.writers;
 
 import java.util.Map;
 
 import org.hibernate.Session;
 
+import commands.CommandException;
+import commands.CommandUtils;
 import backendEntities.ApplicationUser;
 import backendEntities.BookableEntity;
 import backendEntities.Person;
@@ -14,7 +16,7 @@ import backendEntities.Person;
  * @author Lucas Andrade
  *
  */
-public class UpdatePersonName extends DatabaseCommand{
+public class UpdatePersonName implements CommandWriter{
 	
 	/**
 	 * The name old name of the {@code Person}.
@@ -48,11 +50,11 @@ public class UpdatePersonName extends DatabaseCommand{
 	 */
 	public void execute() throws CommandException {
 
-		Session session = openSession();
+		Session session = CommandUtils.openSession();
 		try{
 			ApplicationUser user = (ApplicationUser) session.get(ApplicationUser.class, username);
 			
-			Person person = getThePerson(user, oldName);
+			Person person = CommandUtils.getThePerson(user, oldName);
 			
 			person.setName(newName);
 			Map<String, BookableEntity> bookedEntitiesMap = user.getBookedEntities();

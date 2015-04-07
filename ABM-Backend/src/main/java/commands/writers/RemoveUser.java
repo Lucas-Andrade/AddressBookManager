@@ -1,7 +1,9 @@
-package commands;
+package commands.writers;
 
 import org.hibernate.Session;
 
+import commands.CommandException;
+import commands.CommandUtils;
 import backendEntities.ApplicationUser;
 
 /**
@@ -10,7 +12,7 @@ import backendEntities.ApplicationUser;
  * @author Lucas Andrade
  *
  */
-public class RemoveUser extends DatabaseCommand{
+public class RemoveUser implements CommandWriter{
 
 	/**
 	 * The username of the {@code ApplicationUser} to be removed from the database.
@@ -30,11 +32,11 @@ public class RemoveUser extends DatabaseCommand{
 	}
 	
 	/**
-	 * @see DatabaseCommand#execute()
+	 * @see CommandWriter#execute()
 	 */
 	public void execute() throws CommandException {
 		
-		Session session = openSession();
+		Session session = CommandUtils.openSession();
 		try{
 			ApplicationUser user = (ApplicationUser) session.get(ApplicationUser.class, username);
 			session.delete(user);

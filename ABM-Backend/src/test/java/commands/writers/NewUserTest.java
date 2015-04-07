@@ -1,4 +1,4 @@
-package commands;
+package commands.writers;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
 
+import commands.CommandException;
+import commands.SessionFactorySingleton;
+import commands.writers.NewUser;
 import backendEntities.ApplicationUser;
 
 public class NewUserTest {

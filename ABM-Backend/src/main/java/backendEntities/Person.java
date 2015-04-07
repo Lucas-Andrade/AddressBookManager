@@ -9,6 +9,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * A person, that has a name and several {@code Contact}s.
  * 
@@ -136,7 +139,40 @@ public class Person extends BookableEntity {
 		return name.compareTo(obj.getName());
 	}
 	
+	/**
+	 * @return a {@code JSONObject} representation of {@code this}
+	 */
+	public JSONObject getJson() {
+
+		JSONObject json = new JSONObject();
+		json.put("Name", name);
+		
+		if(contacts.size() == 0) {
+			json.put("Contacts", "None.");
+		} else {
+			JSONArray jsonArray = parseContacts();
+			json.put("Contacts", jsonArray);
+		}
+		
+		return json;
+	}
 	
+	/**
+	 * Constructs a {@code JSONArray} from the {@code contacts}, by using the method
+	 * {@link Contact#getJson()}
+	 * @return a {@code JSONArray} that represents the {@code contacts}
+	 */
+	private JSONArray parseContacts() {
+		JSONArray array = new JSONArray();
+		
+		Iterator<Contact> iterator = contacts.iterator();
+		while(iterator.hasNext()) {
+			array.put(iterator.next().getJson());
+		}
+		
+		return array;
+	}
+
 	/**
 	 * Verifies if the {@code Set} passed as parameter has the same contacts as {@code this}. This means the {@code Set}s
 	 * must have the same size and that every element contained in one must be contained in the other. This is verified
@@ -173,5 +209,6 @@ public class Person extends BookableEntity {
 		return true;
 		
 	}
+
 	
 }

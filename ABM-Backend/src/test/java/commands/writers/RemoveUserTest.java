@@ -1,4 +1,4 @@
-package commands;
+package commands.writers;
 
 import static org.junit.Assert.*;
 
@@ -6,18 +6,24 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
 
+import commands.CommandException;
+import commands.SessionFactorySingleton;
+import commands.writers.RemoveUser;
 import backendEntities.ApplicationUser;
 import backendEntities.Person;
+import backendEntities.PhoneNumber;
 
-public class NewPersonTest {
+public class RemoveUserTest {
 
 	@Test
-	public void shouldAddThePerson() throws CommandException {
-
+	public void shouldRemoveTheUser() throws CommandException {
+		
 		SessionFactory sessionFact = SessionFactorySingleton.getInstance();
 		Session session = sessionFact.openSession();
 		
 		ApplicationUser user = new ApplicationUser("user", "pass", "email@l.l");
+		Person person = new Person("name", new PhoneNumber(123456789));
+		user.getBookedEntities().put(person.getName(), person);
 		
 		session.beginTransaction();
 		session.save(user);
@@ -25,25 +31,14 @@ public class NewPersonTest {
 		
 		session.close();
 		
-		new NewPerson("user", "new person's name").execute();
+		new RemoveUser("user").execute();
 		
 		Session session2 = sessionFact.openSession();
 		session2.beginTransaction();
-		ApplicationUser user2 = (ApplicationUser) session2.get(ApplicationUser.class, "user");
 		
-		Person person = (Person) user2.getBookedEntities().get("new person's name");
-				
-		assertTrue(person != null);
-		assertEquals("new person's name", person.getName());
+		assertNull(session2.get(ApplicationUser.class, "user"));
 		
 		session2.getTransaction().commit();
 		session2.close();
 	}
-	
-	@Test(expected = CommandException.class)
-	public void shouldNotAddThePerson() throws CommandException{
-		
-		new NewPerson("a user that does not exist", "a person that does not exist").execute();
-	}
-
 }

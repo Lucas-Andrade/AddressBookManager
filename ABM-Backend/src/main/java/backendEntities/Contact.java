@@ -6,6 +6,8 @@ import javax.persistence.Id;
 import javax.persistence.InheritanceType;
 import javax.persistence.Inheritance;
 
+import org.json.JSONObject;
+
 
 /**
  * Interface of all {@code Contact}s that an {@code Entity} can have.
@@ -18,6 +20,11 @@ import javax.persistence.Inheritance;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Contact {
+	
+	/**
+	 * The name of the type of contact.
+	 */
+	public final String NAME = "Contact";
 	
 	/**
 	 * {@code Contact}'s unique identifier
@@ -36,6 +43,11 @@ public abstract class Contact {
 	 * @param contact
 	 */
 	public abstract void setContact(String contact);
+	
+	/**
+	 * @return the name of the type of contact.
+	 */
+	public abstract String getName();
 
 	/**
 	 * @return {@code this} contact's identifier
@@ -51,11 +63,20 @@ public abstract class Contact {
 	public void setContactId(int contactId) {
 		this.contactId = contactId;
 	}
-	
+
 	/**
 	 * Compares the specified object with this set for equality.
 	 */
 	@Override
 	public abstract boolean equals(Object object);
+	
+	/**
+	 * @return a {@code JSONObject} representation of the {@code Contact}.
+	 */
+	public JSONObject getJson() {
+		JSONObject json = new JSONObject();
+		json.put(getName(), getContact());
+		return json;
+	}
 	
 }
