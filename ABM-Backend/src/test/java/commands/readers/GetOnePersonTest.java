@@ -17,10 +17,10 @@ import backendEntities.PhoneNumber;
 import commands.CommandException;
 import commands.SessionFactorySingleton;
 
-public class GetAllPersonsTest {
+public class GetOnePersonTest {
 
 	@Test
-	public void shouldGetAllPersons() throws CommandException {
+	public void shouldGetThePersons() throws CommandException {
 		
 		SessionFactory sessionFact = SessionFactorySingleton.getInstance();
 		Session session = sessionFact.openSession();
@@ -40,21 +40,21 @@ public class GetAllPersonsTest {
 		
 		session.close();
 		
-		JSONObject json = new GetAllPersons("user").call();
+		JSONObject json = new GetOnePerson("user", "name1").call();
 		String jsonString = json.toString();
 		
-		assertTrue(jsonString.contains("\"Contact List\":[{"));
 		assertTrue(jsonString.contains("\"Name\":\"name1\""));
-		assertTrue(jsonString.contains("\"Name\":\"name2\""));
 		assertTrue(jsonString.contains("\"Address\":\"street of place1\""));
-		assertTrue(jsonString.contains("\"Address\":\"street of place2\""));
-		assertTrue(jsonString.contains("\"Address\":\"street of place3\""));
 		assertTrue(jsonString.contains("\"Phone Number\":\"111111111\""));
 		assertTrue(jsonString.contains("\"Phone Number\":\"222222222\""));
-		assertTrue(jsonString.contains("\"Phone Number\":\"333333333\""));
-		assertTrue(jsonString.contains("\"Phone Number\":\"444444444\""));
+		
+		assertFalse(jsonString.contains("\"Name\":\"name2\""));
+		assertFalse(jsonString.contains("\"Address\":\"street of place2\""));
+		assertFalse(jsonString.contains("\"Address\":\"street of place3\""));
+		assertFalse(jsonString.contains("\"Phone Number\":\"333333333\""));
+		assertFalse(jsonString.contains("\"Phone Number\":\"444444444\""));
 	}
-	
+
 	@Test
 	public void shouldGetNoPersons() throws CommandException {
 		
@@ -69,10 +69,10 @@ public class GetAllPersonsTest {
 		
 		session.close();
 		
-		JSONObject json = new GetAllPersons("user2").call();
+		JSONObject json = new GetOnePerson("user2", "does not exist").call();
 		String jsonString = json.toString();
 		
-		assertTrue(jsonString.contains("\"Contact List\":[]"));
+		assertTrue(jsonString.contains("{}"));
 	}
-
+	
 }

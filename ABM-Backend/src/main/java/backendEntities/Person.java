@@ -148,7 +148,7 @@ public class Person extends BookableEntity {
 		json.put("Name", name);
 		
 		if(contacts.size() == 0) {
-			json.put("Contacts", "None.");
+			json.put("Contact list", "Empty.");
 		} else {
 			JSONArray jsonArray = parseContacts();
 			json.put("Contacts", jsonArray);
