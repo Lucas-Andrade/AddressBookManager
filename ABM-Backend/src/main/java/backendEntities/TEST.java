@@ -17,8 +17,13 @@ public class TEST {
 		Person person = new Person("nome", new Address("rua do lugar"));
 		user.getBookedEntities().put(person.getName(), person);
 		
+//		ApplicationUser user = (ApplicationUser) session.get(ApplicationUser.class, "utilizador");
+		Person person2 = new Person("nome2", new Address("rua do lugar2"), new PhoneNumber(123456789));
+
+		user.getBookedEntities().put(person2.getName(), person2);
+		
 		session.beginTransaction();
-		session.save(user);
+		session.update(user);
 		session.getTransaction().commit();
 		
 		session.close();
