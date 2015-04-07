@@ -1,5 +1,7 @@
 package backendEntities;
-
+/**
+ *TODO: delete this class
+ */
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
