@@ -1,4 +1,4 @@
-package org.ABM.Application;
+package abmWebApp.resources;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

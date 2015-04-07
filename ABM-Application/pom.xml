@@ -30,18 +30,24 @@
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-servlet</artifactId>
-        </dependency>
-        <dependency>
+    	</dependency>
+    	<dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-moxy</artifactId>
-        </dependency>
-        <dependency>
+    	</dependency>
+    	<dependency>
 	  	  	<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
 		  <scope>provided</scope>
-	</dependency>
+		</dependency>
+		<dependency>
+			<groupId>AddressBookManager</groupId>
+			<artifactId>ABM-Backend</artifactId>
+			<version>${project.version}</version>
+		</dependency>
   </dependencies>
+  
   <build>
     <finalName>ABM-Application</finalName>
     <plugins>
