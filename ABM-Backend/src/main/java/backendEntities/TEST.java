@@ -25,7 +25,7 @@ public class TEST {
 		user.getBookedEntities().put(person2.getName(), person2);
 		
 		session.beginTransaction();
-		session.update(user);
+		session.save(user);
 		session.getTransaction().commit();
 		
 		session.close();

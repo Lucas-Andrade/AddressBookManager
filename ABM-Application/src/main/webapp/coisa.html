@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC “-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+
+	<title> coisa </title>
+	<script language = "javascript" src="js/coisa.js"></script>
+
+</head>
+
+
+<body>
+
+	<div>
+		Enter your name: 
+		<input id="name" name="name" type="text" size="30"	onBlur="isTheFieldEmpty(this, document.getElementById('name_help'))" />
+		<span id="name_help"></span>
+	</div>
+	<div>
+		Enter your street address: 
+		<input id="street" name="street" type="text" size="30" onBlur="isAddressOk(this, document.getElementById('street_help'))" />
+		<span id="street_help"></span>
+	</div>
+	<div>
+		Enter your city: 
+		<input id="city" name="city" type="text" size="30"	onBlur="isTheFieldEmpty(this, document.getElementById('city_help'))" />
+		<span id="city_help"></span>
+	</div>
+	<div>
+		Enter your state code: 
+		<input id="state" name="state" type="text" size="2" onBlur="isStateOk(this, document.getElementById('state_help'))" />
+		<span id="state_help"></span>
+	</div>
+	<div>
+		Enter your phone number: 
+		<input id="phone" name="phone" type="text"	size="15" onBlur="isPhoneOk(this, document.getElementById('phone_help'))" />
+		<span id="phone_help"></span>
+	</div>
+	<div>
+		Enter your email: 
+		<input id="email" name="email" type="text" size="30" onBlur="isEmailOk(this, document.getElementById('email_help'))" /> 
+		<span id="email_help"></span>
+	</div>
+	<div>
+		Click Button for a 3 Second Alarm: 
+		<input id="alarm" name="alarm" type="button" value="Set Alarm" onClick="setTimeout('alert(\'3 seconds!\')',3000)" />
+	</div>
+</body>
+</html>
