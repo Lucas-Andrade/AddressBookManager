@@ -40,8 +40,6 @@
 
   <modules>
   	<module>ABM-Backend</module>
-  	<module>ABM-Server</module>
-  	<module>ABM-Client</module>
     <module>ABM-Application</module>
   </modules>
 </project>
