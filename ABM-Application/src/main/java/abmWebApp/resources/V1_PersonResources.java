@@ -17,7 +17,14 @@ import commands.writers.NewPerson;
 import commands.writers.RemovePerson;
 import commands.writers.UpdatePersonName;
 
-
+/**
+ * Defines the methods for the resources related to the {@code Person}s. 
+ * 
+ * @version 0.1.0
+ * 
+ * @author Lucas Andrade
+ *
+ */
 @Path("v1/users/{username}/persons")
 public class V1_PersonResources {
 
@@ -30,16 +37,16 @@ public class V1_PersonResources {
 	 */ 
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	public String getAllContacts(@PathParam("username") String username) {
+	public Response getAllContacts(@PathParam("username") String username) {
 
 		String toReturn = "Something went wrong.";
 		try {
 			toReturn = new GetAllPersons(username).call().toString();
 		} catch (CommandException e) {
-			return "erro";//Response.status(404).entity("Could not find person, or user.").build();
+			return Response.status(404).entity("Could not find person, or user." + e.getMessage()).build();
 		}
 
-		return toReturn;//Response.ok(toReturn).build();
+		return Response.ok(toReturn).build();
 	}
 	
 	
@@ -53,15 +60,12 @@ public class V1_PersonResources {
 	@Path("/{person}")
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response getOneContact(@PathParam("username") String username,
-			@PathParam("person") String person) {
-
+	public Response getOneContact(@PathParam("username") String username, @PathParam("person") String person) {
 		String result = "Something went wrong.";
 		try {
 			result = new GetOnePerson(username, person).call().toString();
 		} catch (CommandException e) {
-			return Response.status(404)
-					.entity("Could not find person, or user.").build();
+			return Response.status(404).entity("Could not find person, or user.").build();
 		}
 
 //		// TODO encode everything
@@ -70,7 +74,13 @@ public class V1_PersonResources {
 		return response;
 	}
 	
-	
+	/**
+	 * Adds a new person with the specified name
+	 * 
+	 * @param username
+	 * @param person
+	 * @return
+	 */
 	@Path("/{person}")
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
@@ -84,10 +94,18 @@ public class V1_PersonResources {
 					.entity("Unable to process item.").build();
 		}
 		
-		Response response = Response.status(201).build();
+		Response response = Response.status(201).entity("Created.").build();
 		return response;
 	}
 	
+	/**
+	 * Changes the name the person to a new one
+	 * 
+	 * @param username
+	 * @param person
+	 * @param newName
+	 * @return
+	 */
 	@Path("/{person}/newname/{newName}")
 	@PUT
 	@Produces(MediaType.TEXT_PLAIN)
@@ -105,6 +123,13 @@ public class V1_PersonResources {
 		return response;
 	}
 	
+	/**
+	 * Deletes the person
+	 * 
+	 * @param username
+	 * @param person
+	 * @return
+	 */
 	@Path("/{person}")
 	@DELETE
 	@Produces(MediaType.TEXT_PLAIN)

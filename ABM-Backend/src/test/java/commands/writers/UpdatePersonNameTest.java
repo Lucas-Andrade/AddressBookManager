@@ -38,7 +38,6 @@ public class UpdatePersonNameTest {
 		
 		Person updatedPerson = (Person) user2.getBookedEntities().get("best name");
 		
-		System.out.println(updatedPerson.getName());
 		assertTrue(updatedPerson != null);
 		
 		session2.getTransaction().commit();
